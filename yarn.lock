@@ -5608,6 +5608,10 @@ spdy@^3.4.1:
     lodash.padstart "^4.2.0"
     prop-types "^15.6.0"
 
+spectacle-image-slide@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/spectacle-image-slide/-/spectacle-image-slide-1.0.1.tgz#69fbf1c39b241b42d479f543393fb9789d4e0eb9"
+
 spectacle-renderer@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/spectacle-renderer/-/spectacle-renderer-0.0.3.tgz#eff08a64cd83d9385579581a4d1245de79ec2533"

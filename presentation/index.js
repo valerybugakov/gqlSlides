@@ -1,7 +1,6 @@
-// Import React
 import React from "react";
-import CodePrism from 'react-prism';
 import CodeSlide from 'spectacle-code-slide'
+// import ImageSlide from 'spectacle-image-slide'
 import 'prismjs/components/prism-javascript'
 import 'prismjs/components/prism-json'
 import 'prismjs/components/prism-jsx'
@@ -18,10 +17,8 @@ import {
 } from 'spectacle';
 
 import preloader from 'spectacle/lib/utils/preloader';
-
 import createTheme from "spectacle/lib/themes/default";
-
-import Interactive from '../assets/interactive';
+// import Interactive from '../assets/interactive';
 
 // Require CSS
 require("normalize.css");
@@ -69,9 +66,6 @@ const flux = [
 
 preloader(images);
 
-// const theme = createTheme({
-//   primary: '#ff4081'
-// });
 const theme = createTheme({
   primary: "white",
   secondary: "#1F2022",
@@ -88,45 +82,12 @@ export default class Presentation extends React.Component {
   }
 
   updateSteps = steps => {
-    if (this.state.steps !== steps) { // eslint-disable-line no-invalid-this
-      this.setState({ steps }); // eslint-disable-line no-invalid-this
+    if (this.state.steps !== steps) {
+      this.setState({ steps })
     }
   }
 
   render() {
-    const code = `
-    "person": {
-      "name": "Darth Vader",
-      "birthYear": "41.9BBY",
-      "planet": {
-        "name": "Tatooine"
-      },
-      "films": [
-        { "title": "A New Hope" },
-        { "title": "The Empire Strikes Back" },
-        { "title": "Return of the Jedi" },
-        { "title": "Revenge of the Sith" }
-      ]
-    }`
-
-    const code2 = `
-    "person": {
-      "name": "Darth Vader",
-      "birthYear": "41.9BBY",
-      "planet": {
-        "name": "Tatooine"
-      },
-      "films": [
-        {
-          "title": "A New Hope",
-          "year": 1992
-        },
-        { "title": "The Empire Strikes Back" },
-        { "title": "Return of the Jedi" },
-        { "title": "Revenge of the Sith" }
-      ]
-    }`
-
     console.log(this.state.steps)
     const { steps } = this.state
 
@@ -147,7 +108,26 @@ export default class Presentation extends React.Component {
           </Link>
           <Text textSize="1.5em" margin="20px 0px 0px" bold>Hit Your Right Arrow To Begin!</Text>
         </Slide>
-        <Slide transition={[]} display="flex" getAppearStep={this.updateSteps}>
+        <Slide
+          transition={[]}
+          display="flex"
+          getAppearStep={this.updateSteps}
+          notes="
+            REST не гибок, скорее всего в таком случае мы не будет пользоваться каноническим РЕСТом
+            с эндпоинтом под каждую сущность и 10 запросами на такую простую карточку
+
+            Но тогда эднпоинт который будет хорошо подходить только для конкретной вьюхи, при появляении
+            новых похожих отображений потребуются модификации текущего эндпоинта или добавление нового.
+            Это всегда трейдоффы и не хотелось бы на это тратить силы при разрботке
+
+            Например потом появится десктопное приложения использующее это же АПИ
+            скорее всего данных там нужно будет забирать больше, у изображений будут другие разрешения
+            так как размер экрна позволяет обобразить больше инофрмации
+
+            в случае с РЕСТ потребуются дополнительные параметры для эндпоинтов или полностью отдельные
+            под новую платформу
+          "
+        >
           <Layout>
             <Fill>
               <Image src={images.db}/>
@@ -175,24 +155,51 @@ export default class Presentation extends React.Component {
             </Appear>
           </Layout>
         </Slide>
-        <Slide>
+        <Slide
+          notes="
+            АПИ должно быть эффективным — мы хотим забирать только те данные,
+            которые нам нужны чтобы свести нагрузку на сеть к минимуму,
+            и мы не хотим делать много запросов, особенно актуально для мобильных девайсов с плохой связью,
+            в идеале хотим забирать все что нам нужно сразу.
+
+            АПИ должно быть удобным — клиенты должны иметь возможность описывать поля, которые им нужны
+            опираясь на информацию о том, что есть на сервере, типы этих полей
+
+            его не нужно менять под новые фичи и приложения
+            в то же время его можно менять для новых фич, сохраняя поддержку старых версий
+            (опять привет от разных версий моб. приложений)
+          "
+        >
           <Image src={images.api} />
         </Slide>
         <Slide>
           <Image src={images.graphiqlGif}/>
         </Slide>
-        <Slide>
+        <Slide
+          notes="
+            Итого гкл — это тонкая прослойка между фронтендом и вашими источниками данных, будь то БД
+            редис сторонний АПИ или ваш старый РЕСТ апи. Их все достаточно легко объединить под одним эндроинтом, который
+            предоставит удобный доступ к данным все клиентам, подкрепленный системой типов и эффективным языком запросов.
+          "
+        >
           <Image src={images.gqlSummary}/>
         </Slide>
         <Slide>
           <Heading>GraphQL по частям</Heading>
           <List>
             <Appear><ListItem>Схема данных</ListItem></Appear>
-            <Appear><ListItem>Резолверы</ListItem></Appear>
+            <Appear><ListItem>Резолверы полей</ListItem></Appear>
             <Appear><ListItem>Язык запросов</ListItem></Appear>
           </List>
         </Slide>
-        <Slide bgColor="#122B45">
+        <Slide
+          bgColor="#122B45"
+          notes="
+            Схема в гкл — описание того какие данные у тебя доступны на сервере. Это формальная система типов
+            в которой можно задать поля для каждого типа и связи этих типов между собой.
+            Любой гкл сервер может отдать метаданные о доступных типах в стандартном виде, например в виде JSON.
+          "
+        >
           <Image src={images.schema} />
         </Slide>
         <CodeSlide
