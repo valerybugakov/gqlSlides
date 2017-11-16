@@ -1,9 +1,12 @@
-assigned {
-  user {
-    id
-    firstName
-    lastName
-    avatarUrl(size: 80)
+conversation {
+  ...
+  assigned {
+    user {
+      id
+      firstName
+      lastName
+      avatarUrl(size: 80)
+    }
+    date
   }
-  date
 }

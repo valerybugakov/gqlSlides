@@ -1,3 +1,33 @@
+        <Slide transition={[]} bgColor="black">
+          <Layout>
+            <Fill>
+              <Text textColor="white" textSize="30" textAlign="left">Запрос</Text>
+              <CodeSnippet
+                code={require("raw-loader!../assets/anakinQuery.ex")}
+                lang="graphql"
+                codeStyle={{
+                  fontSize: 22,
+                  color: '#aeebff',
+                  marginLeft: '-120px',
+                  fontWeight: 'bold',
+                }}
+              />
+            </Fill>
+            <Fill>
+              <Text textColor="white" textSize="30" textAlign="left">Ответ</Text>
+              <CodeSnippet
+                code={require("raw-loader!../assets/anakinResult.ex")}
+                lang="json"
+                codeStyle={{
+                  fontSize: 22,
+                  color: '#aeebff',
+                  fontWeight: 'bold',
+                }}
+              />
+            </Fill>
+          </Layout>
+        </Slide>
+
         <Slide transition={[]} display="flex" getAppearStep={this.updateSteps}>
           <Layout>
             <Image height="600" maxWidth="none" src={this.state.steps < 2 ? images.rest1 : images.rest2}/>

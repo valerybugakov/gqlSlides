@@ -76,6 +76,8 @@ const theme = createTheme({
   secondary: "Helvetica"
 });
 
+theme.screen.progress.pacman.container.mixBlendMode = 'difference'
+
 export default class Presentation extends React.Component {
   state = {
     steps: 0
@@ -95,18 +97,8 @@ export default class Presentation extends React.Component {
       <Deck transition={['slide']} theme={theme} transitionDuration={500}>
         <Slide transition={['zoom']} bgColor="primary">
           <Heading size={1} fit caps lineHeight={1} textColor="black">
-            Spectacle
+            GraphQL FTW
           </Heading>
-          <Heading size={1} fit caps>
-            A ReactJS Presentation Library
-          </Heading>
-          <Heading size={1} fit caps textColor="black">
-            Where You Can Write Your Decks In JSX
-          </Heading>
-          <Link href="https://github.com/FormidableLabs/spectacle">
-            <Text bold caps textColor="tertiary">View on Github</Text>
-          </Link>
-          <Text textSize="1.5em" margin="20px 0px 0px" bold>Hit Your Right Arrow To Begin!</Text>
         </Slide>
         <Slide
           transition={[]}
@@ -130,7 +122,7 @@ export default class Presentation extends React.Component {
         >
           <Layout>
             <Fill>
-              <Image src={images.db}/>
+              <Image width="250px" src={images.db}/>
             </Fill>
             <Appear>
               <Fill>
@@ -149,7 +141,7 @@ export default class Presentation extends React.Component {
                   <Text margin="0 0 75px 50px" textSize={20} textAlign="left">GET — {'/person/{id}?include=films,planets'}</Text>
                 </Appear>
                 <Appear>
-                  <Image width="220px" src={images.mushrooms} />
+                  <Text margin="0 0 0 50px" textSize={50} textAlign="left">...</Text>
                 </Appear>
               </Fill>
             </Appear>
@@ -157,22 +149,62 @@ export default class Presentation extends React.Component {
         </Slide>
         <Slide
           notes="
-            АПИ должно быть эффективным — мы хотим забирать только те данные,
-            которые нам нужны чтобы свести нагрузку на сеть к минимуму,
-            и мы не хотим делать много запросов, особенно актуально для мобильных девайсов с плохой связью,
+            АПИ должно быть эффективным — мы хотим ЗАБИРАТЬ ТОЛЬКО ТЕ ДАННЫЕ,
+            КОТОРЫЕ НАМ НУЖНЫ чтобы СВЕСТИ НАГРУЗКУ НА СЕТЬ К МИНИМУМУ,
+            и мы НЕ ХОТИМ ДЕЛАТЬ МНОГО ЗАПРОСОВ, особенно актуально для мобильных девайсов с плохой связью,
             в идеале хотим забирать все что нам нужно сразу.
 
-            АПИ должно быть удобным — клиенты должны иметь возможность описывать поля, которые им нужны
-            опираясь на информацию о том, что есть на сервере, типы этих полей
-
-            его не нужно менять под новые фичи и приложения
-            в то же время его можно менять для новых фич, сохраняя поддержку старых версий
-            (опять привет от разных версий моб. приложений)
+            Гкл ПЕРЕКЛАДЫВАЕТ всю ответсветнность за данные на серверную команду предоставляя возможность клиентам
+            работать НЕЗАВИСИМО
+            клиенты должны иметь возможность описывать поля, которые им нужны
+            опираясь на информацию о том, что есть на сервере, типы этих полей.
           "
         >
           <Image src={images.api} />
         </Slide>
-        <Slide>
+        <Slide
+          transition={[]}
+          bgColor="black"
+          notes="
+            ХОРОШО БЫ ИЗМЕНЯТЬ АПИ КОГДА ЭТО НУЖНО без введения новых версий, сохраняя поддержку для старых, пока это необходимо
+            (опять привет от разных версий моб. приложений)
+          "
+        >
+          <Layout>
+            <Fill>
+              <Text textColor="white" textSize="30" textAlign="left">Запрос</Text>
+              <CodeSnippet
+                code={require("raw-loader!../assets/anakinQuery2.ex")}
+                lang="graphql"
+                codeStyle={{
+                  fontSize: 22,
+                  color: '#aeebff',
+                  marginLeft: '-120px',
+                  fontWeight: 'bold',
+                }}
+              />
+            </Fill>
+            <Fill>
+              <Text textColor="white" textSize="30" textAlign="left">Ответ</Text>
+              <CodeSnippet
+                code={require("raw-loader!../assets/anakinResult2.ex")}
+                lang="json"
+                codeStyle={{
+                  fontSize: 22,
+                  color: '#aeebff',
+                  fontWeight: 'bold',
+                }}
+              />
+            </Fill>
+          </Layout>
+        </Slide>
+        <Slide
+          notes="
+            ХОРОШО БЫ ИМЕТЬ МЕТА ДАННЫЕ О ТОМ ЧТО МОЖНО ЗАБРАТЬ С БЭКЕНДА и использовать их для верификации запросов у клиентов
+
+            хорошо бы иметь ТУЛЗЫ ДЛЯ ПРОСМОТРА ИНФОРМАЦИИ О ТОМ ЧТО ЕСТЬ НА СЕРВЕРЕ
+          "
+        >
           <Image src={images.graphiqlGif}/>
         </Slide>
         <Slide
@@ -185,7 +217,7 @@ export default class Presentation extends React.Component {
           <Image src={images.gqlSummary}/>
         </Slide>
         <Slide>
-          <Heading>GraphQL по частям</Heading>
+          <Heading size={3} textColor="tertiary" margin="0 0 35px 0">GraphQL по частям</Heading>
           <List>
             <Appear><ListItem>Схема данных</ListItem></Appear>
             <Appear><ListItem>Резолверы полей</ListItem></Appear>
@@ -195,27 +227,107 @@ export default class Presentation extends React.Component {
         <Slide
           bgColor="#122B45"
           notes="
-            Схема в гкл — описание того какие данные у тебя доступны на сервере. Это формальная система типов
+            Схема в гкл — описание того графа данных доступных на сервере. Это формальная система типов
             в которой можно задать поля для каждого типа и связи этих типов между собой.
+
+            Корень графа описывает поля доступные изначально в запросе. Если тип поля ссылается на другом тип в графе данных
+            то клиент может запросить любое из его вложенный полей. Такие связи так же могут быть рекурсивными и сколь угодно
+            вложенными, если этого не ограничивает сервер.
+
+            Скалярные типы данных всегда возвращают значение в отличие от структурированных.
+
             Любой гкл сервер может отдать метаданные о доступных типах в стандартном виде, например в виде JSON.
           "
         >
-          <Image src={images.schema} />
+          <Layout>
+            <Fill>
+              <Image src={images.schema} />
+            </Fill>
+            <Fill>
+              <CodeSnippet
+                code={require("raw-loader!../assets/schema.graphql")}
+                lang="graphql"
+                codeStyle={{
+                  fontSize: 22,
+                  color: '#aeebff',
+                  fontWeight: 'bold',
+                }}
+              />
+            </Fill>
+          </Layout>
         </Slide>
         <CodeSlide
           transition={[]}
-          lang="js"
+          lang="jsx"
           color="white"
           bgColor="#122b45"
           code={require("raw-loader!../assets/serverSetup.ex")}
           ranges={[
-            { loc: [0, 20], title: "На сервере" },
-            { loc: [0, 10] },
-            { loc: [11, 18], note: "Resolvers" },
+            { loc: [0, 0], title: "На сервере" },
+            { loc: [0, 17] },
+            { loc: [18, 28] },
           ]}
         />
-        <Slide getAppearStep={this.updateSteps}>
-          <Heading>На клиенте</Heading>
+        <Slide
+          bgColor="#111"
+          notes="
+            Чтобы получить данные от такого сервера, необходимо отправить ему запрос валидный запрос в формате GraphQL
+            Все запросы отправляются методом POST, для того чтобы строку запроса и переменные можно было передавать в BODY
+
+            Обычно запрос возвращает JSON полностью повторяющий форму запроса. Это офигенно удобно, а если неудобно представлен граф
+            существуювуют всякие директивы и ключеные слова, которые позволяют делать алиасы для поле, спредить какие-то значения на уровень выше
+            чтобы получился именно такой JSON который нам нужен.
+          "
+        >
+          <Heading size={3} textColor="tertiary" margin="0 0 40px 0">
+            На клиенте
+          </Heading>
+          <Layout>
+            <Fill>
+              <Text bold textColor="#e6e7e8" textSize="22px">
+                Строка запроса на языке GraphQL
+              </Text>
+              <CodeSnippet
+                code={require("raw-loader!../assets/simpleQuery.ex")}
+                lang="graphql"
+                codeStyle={{
+                  fontSize: 22,
+                  color: '#aeebff',
+                  fontWeight: 'bold',
+                }}
+              />
+            </Fill>
+            <Fill>
+              <Text bold textColor="#e6e7e8" textSize="22px">
+                JSON ответ
+              </Text>
+              <CodeSnippet
+                code={require("raw-loader!../assets/simpleResponse.ex")}
+                lang="json"
+                codeStyle={{
+                  fontSize: 22,
+                  color: '#aeebff',
+                  fontWeight: 'bold',
+                }}
+              />
+            </Fill>
+          </Layout>
+        </Slide>
+        <Slide
+          getAppearStep={this.updateSteps}
+          notes="
+            Три вида операций — Запрос данных, Мутация — запись данные, Подписка на обновления данных.
+            Название операция для логгирования и дебагинга
+            Декларация переменных, которые будут использованы в запросе. Слово с долларом — это название переменной, штука справа от него — тип переменной.
+            Сервер может валидировать типа передываемых переменных, так как они задеклрированы в схеме данных.
+
+            Дальше запросы можно использовать в селекшн сете, который описывает поля, которые мы хотим выбрать из графа данных.
+            Переменные могут быть использованы на любом уровне вложенности селекшн сета для фильтрации данных.
+          "
+        >
+          <Heading size={3} textColor="tertiary">
+            Анатомия
+          </Heading>
           <Image
             src={images.query1}
             style={steps === 1 && { opacity: 0 }}
@@ -225,13 +337,45 @@ export default class Presentation extends React.Component {
               src={images.query2}
               style={{
                 position: 'absolute',
-                top: '220px',
+                top: '192px',
                 width: '94%',
               }}
             />
           </Appear>
         </Slide>
-        <Slide transition={['fade']} bgColor="secondary" textColor="primary">
+        <Slide
+          transition={['fade']}
+          bgColor="secondary"
+          textColor="primary"
+          notes="
+            Для того чтобы эти строки отправлять с клиента, есть вот такой солидный список библиотек.
+            Многие из них активно развиваются.
+
+            Всего na три составляющих какие-то библиотеки на клиенте, про которые постоянно пишут статьи
+            снимают туториалы и холиварят на реддите.
+          "
+        >
+          <Heading size={6} textColor="tertiary">
+            Клиентские библиoтеки
+          </Heading>
+          <List>
+            <ListItem>Relay</ListItem>
+            <ListItem>Apollo</ListItem>
+            <ListItem>Graphql-request by Graphcool</ListItem>
+            <ListItem>Graphql-client by Shopify</ListItem>
+            <ListItem>Locca - not maintained</ListItem>
+            <ListItem>...</ListItem>
+          </List>
+        </Slide>
+        <Slide
+          transition={['fade']}
+          bgColor="secondary"
+          textColor="primary"
+          notes="
+            На самом деле библиотеки клиентов делают кучу полезных штук и напичканы логикой — вот основные из них.
+            Полтора года назад прочитав весь этот список фич я обрадованни кинулся пробовать все это на тестовом сервере и получилось как всегда.
+          "
+        >
           <Heading size={6} textColor="tertiary">
             Отдельная библиотека для запросов?
           </Heading>
@@ -246,21 +390,44 @@ export default class Presentation extends React.Component {
             <Appear><ListItem>Тулзы для оптимизации</ListItem></Appear>
           </List>
         </Slide>
-        <Slide>
+        <Slide
+          notes="
+            Тут не завелось, там упало, здесь я три дня читал все ишью чтобы найти в одном из них неприметный коммент мейнтейнера с ответом на вопрос.
+            Сейчас дела стали лучше, но лучше бы знать заранее где подвох.
+          "
+        >
           <Image src={images.rake} />
         </Slide>
-        <Slide transition={['fade']} bgColor="secondary" textColor="primary">
+        <Slide
+          transition={['fade']}
+          bgColor="secondary"
+          textColor="primary"
+        >
           <Heading size={6} textColor="tertiary">
             Где лежат грабли?
           </Heading>
           <List>
-            <Appear><ListItem>Сетап графа данных</ListItem></Appear>
+            <Appear><ListItem>Описаниие графа данных</ListItem></Appear>
             <Appear><ListItem>Подключение клиента к приложению</ListItem></Appear>
             <Appear><ListItem>Организация кода</ListItem></Appear>
             <Appear><ListItem>Дебаг ошибок</ListItem></Appear>
           </List>
         </Slide>
-        <Slide bgColor="#111">
+        <Slide
+          bgColor="#111"
+          notes="
+            Первое что нужно сделать как мы уже говорили — создать схемы для моделей данных.
+            Здесь при проектировании АПИ возникает сильное желание по привычке сделать все как раньше в REST но используя graphql фреймворк.
+            Посмотреть на UI и сделать по полю под каждую страницу.
+            Или взять эндпоинты и пересадить их в граф под какими-то именами.
+
+            Выход: работать только с данными как при проектировании DB.
+            Важно отразить все связи между сущностями, чем точнее он отображает все связи,
+            тем больше вероятность того, что разработчики на клиенте найдут данные, которые им нужны для их новой полу превьюшной фоточки не изменяя ничего на бекенде.
+            Этот подход решает проблемы извевстные как overfetching and underfetching (N + 1 problem).
+            Таким образом разработчики клиентов могут найти такие пути использования вашего графа, о которых вы изначально не задумывались.
+          "
+        >
           <Heading
             size={6}
             textColor="tertiary"
@@ -276,7 +443,13 @@ export default class Presentation extends React.Component {
           </Heading>
           <Graph />
         </Slide>
-        <Slide bgColor="black">
+        <Slide
+          bgColor="black"
+          notes="
+            Дизайн поменяется на текущем клиенте. Появится новый клиент с новыми требованиями.
+            Конечно можно забирать картинку всегда огромную, но лучше выбирать нужного размера.
+          "
+        >
           <Image width="380px" src={images.assigned} />
           <Layout>
             <Fill>
@@ -306,33 +479,28 @@ export default class Presentation extends React.Component {
           </Layout>
         </Slide>
         <Slide bgColor="black">
+          <Heading size={5} textColor="white">Фичи отдельно от данных</Heading>
+          <CodeSnippet
+            code={require("raw-loader!../assets/searchQuery.ex")}
+            lang="graphql"
+            codeStyle={{
+              fontSize: 22,
+              color: '#aeebff',
+              fontWeight: 'bold',
+            }}
+          />
+        </Slide>
+        <Slide bgColor="black">
           <Heading size={5} textColor="white">Больше аргументов</Heading>
-          <Layout>
-            <Fill>
-              <CodeSnippet
-                code={require("raw-loader!../assets/searchQuery.ex")}
-                lang="graphql"
-                codeStyle={{
-                  fontSize: 22,
-                  color: '#aeebff',
-                  fontWeight: 'bold',
-                }}
-              />
-            </Fill>
-            <Appear>
-              <Fill>
-                <CodeSnippet
-                  code={require("raw-loader!../assets/arguments.ex")}
-                  lang="graphql"
-                  codeStyle={{
-                    fontSize: 22,
-                    color: '#aeebff',
-                    fontWeight: 'bold',
-                  }}
-                />
-              </Fill>
-            </Appear>
-          </Layout>
+          <CodeSnippet
+            code={require("raw-loader!../assets/arguments.ex")}
+            lang="graphql"
+            codeStyle={{
+              fontSize: 22,
+              color: '#aeebff',
+              fontWeight: 'bold',
+            }}
+          />
         </Slide>
         <Slide>
           <Layout>
@@ -358,12 +526,13 @@ export default class Presentation extends React.Component {
           bgColor="#122b45"
           code={require("raw-loader!../assets/clientSetup.ex")}
           ranges={[
-            { loc: [0, 9], title: "Apollo Client setup" },
-            { loc: [5, 6] },
-            { loc: [6, 7] },
+            { loc: [0, 0], title: "Apollo Client setup" },
+            { loc: [0, 3] },
+            { loc: [4, 9] },
           ]}
         />
         <Slide bgColor="#111">
+          <Heading size={5} textColor="#cbcbcb" margin="0 0 200px 80px">Этапы загрузки данных</Heading>
           <Steps
             steps={[
               {
@@ -407,6 +576,7 @@ export default class Presentation extends React.Component {
           <Image width="1000px" src={images.whyKitten}/>
         </Slide>
         <Slide bgColor="#111">
+          <Heading size={5} textColor="#cbcbcb" margin="0 0 200px 80px">Этапы загрузки данных</Heading>
           <Steps
             steps={[
               {
@@ -499,24 +669,32 @@ export default class Presentation extends React.Component {
           <Image src={images.wtf}/>
         </Slide>
         <Slide bgColor="#172b43">
-          <Heading size={2} textColor="tertiary" textFont="primary">
+          <Heading size={2} textColor="tertiary" textFont="primary" margin="0 0 35px 0">
             По шагам
           </Heading>
           <Image src={images.queryFlow}/>
         </Slide>
         <Slide>
-          <Heading size={5} textAlign="left" textColor="tertiary">
+          <Heading size={3} fill textColor="tertiary">
             Devtools!
           </Heading>
-          <Heading size={5} textAlign="left" textColor="tertiary">
-            Graphiql
-          </Heading>
-          <Heading size={5} textAlign="left" textColor="tertiary">
-            Eslint-plugin-graphql
-          </Heading>
-          <Heading size={5} textAlign="left" textColor="tertiary">
-            Apollo-codegen
-          </Heading>
+          <List>
+            <Appear>
+              <ListItem textSize="40px">
+                Graphiql
+              </ListItem>
+            </Appear>
+            <Appear>
+              <ListItem textSize="40px">
+                Eslint-plugin-graphql
+              </ListItem>
+            </Appear>
+            <Appear>
+              <ListItem textSize="40px">
+                Apollo-codegen
+              </ListItem>
+            </Appear>
+          </List>
         </Slide>
         <Slide>
           <Heading size={3} textColor="tertiary" textFont="primary">
@@ -535,15 +713,27 @@ export default class Presentation extends React.Component {
             { loc: [7, 19], note: "Инлайн фрагменты" },
             { loc: [20, 36] },
           ]}
+          notes="
+            Persisted Queries
+          "
         />
         <Slide>
           <Image src={images.cache}/>
         </Slide>
         <Slide>
           <Heading>MORE DATA</Heading>
+          <CodeSnippet
+            code={require("raw-loader!../assets/muatation.ex")}
+            lang="graphql"
+            codeStyle={{
+              fontSize: 22,
+              // color: '#aeebff',
+              fontWeight: 'bold',
+            }}
+          />
         </Slide>
         <Slide bgColor="#111">
-          <Heading>Cache consistency</Heading>
+          <Heading fill size={3} textColor="tertiary">Cache consistency</Heading>
           <CodeSnippet
             code={require("raw-loader!../assets/store.ex")}
             lang="json"
@@ -608,14 +798,16 @@ export default class Presentation extends React.Component {
                 Следите за кэшем
               </ListItem>
             </Appear>
+            <Appear>
+              <ListItem textSize="35px">
+                ❤️ GraphQL
+              </ListItem>
+            </Appear>
           </List>
         </Slide>
 
-        <Slide transition={['spin', 'slide']} bgColor="tertiary">
-          <Heading size={1} caps fit lineHeight={1.5} textColor="primary">
-            Made with love in Seattle by
-          </Heading>
-          <Link href="http://www.formidable.com"><Image width="100%" src={images.logo}/></Link>
+        <Slide transition={["fade"]} bgColor="tertiary">
+          <Heading size={4} textColor="primary">Thanks!</Heading>
         </Slide>
       </Deck>
     );

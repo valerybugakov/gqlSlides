@@ -5,4 +5,11 @@ type Query {
 type User {
   id: ID!
   name: String
+  address: Location
+}
+
+type Location {
+  id: ID!
+  city: String
+  street: String
 }

@@ -6,13 +6,22 @@ const schema = `
   type User {
     id: ID!
     name: String
+    address: Location
+  }
+
+  type Location {
+    id: ID!
+    city: String
+    street: String
   }
 `
 
-function getViewer(request) {
-  return request.auth.user
+// Resolvers
+const root = {
+  viewer: request => request.auth.user,
 }
 
-function getUserName(user) {
-  return user.getName()
+const user = {
+  name: user => user.getName(),
+  address: user => user.getAddress(),
 }

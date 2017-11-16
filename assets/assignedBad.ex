@@ -1,7 +1,10 @@
-assigned {
-  id
-  firstName
-  lastName
-  avatarUrl
-  date
+conversation {
+  ...
+  assigned {
+    id
+    firstName
+    lastName
+    avatarUrl
+    date
+  }
 }

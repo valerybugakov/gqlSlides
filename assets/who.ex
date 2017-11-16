@@ -9,13 +9,17 @@ query {
 
 # Field path context
 query {
-  teacher {
-    students
+  university {
+    lesson {
+      students
+    }
   }
 }
 
 query {
-  lesson {
-    students
+  day {
+    lesson {
+      students
+    }
   }
 }
