@@ -24,7 +24,7 @@ require('normalize.css')
 const images = {
   db: require('../assets/db.png'),
   anakin: require('../assets/anakin.png'),
-  api: require('../assets/api.jpg'),
+  api: require('../assets/api.png'),
   graphiqlGif: require('../assets/graphiql.gif'),
   gqlSummary: require('../assets/gqlSummary.png'),
   schema: require('../assets/schema.png'),
