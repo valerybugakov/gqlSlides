@@ -1025,7 +1025,7 @@ export default class Presentation extends Component {
 
               <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
                 <Image src={images.twitter} width="40px" height="40px" margin="0 15px 0 0" />
-                <Text href="http://twitter.com/evilmartians" textSize="2rem" textColor="#47a0ec">evilmartians</Text>
+                <Link href="http://twitter.com/evilmartians" textSize="2rem" textColor="#47a0ec">evilmartians</Link>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
                 <Image src={images.web} width="40px" height="40px" margin="0 15px 0 0" />
