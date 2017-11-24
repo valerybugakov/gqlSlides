@@ -204,6 +204,24 @@ export default class Presentation extends Component {
             </Fill>
           </Layout>
         </Slide>
+        <CodeSlide
+          transition={[]}
+          lang="jsx"
+          color="white"
+          bgColor="#122b45"
+          code={require('raw-loader!../assets/request.ex')}
+          ranges={[
+            { loc: [0, 0], title: 'Стандартный запрос' },
+            { loc: [0, 5], note: 'Actions' },
+            { loc: [6, 11], note: 'Reducer' },
+            { loc: [12, 23], note: 'Side effect' },
+            { loc: [24, 32], note: 'Connect' },
+            { loc: [33, 41], note: 'Lifecycle' },
+            { loc: [42, 55], note: 'Render' },
+            { loc: [42, 55], note: 'Нормализация?' },
+            { loc: [42, 55], note: 'Оптимистичные апдейты?' },
+          ]}
+        />
         <Slide
           notes="
             Из этих проблем и родилась спецификация гкл. Используя гкл на бэкенде мы получаем

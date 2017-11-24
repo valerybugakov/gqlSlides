@@ -1,11 +1,11 @@
 person(id: $id) {
   name
   birthYear
-  homeworld {
+  planet {
     name
   }
   films {
     title
-    releaseDate
+    year
   }
 }

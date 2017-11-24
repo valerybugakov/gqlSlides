@@ -17,7 +17,6 @@
           ]}
         />
 
-
         <Slide
           bgColor="black"
           notes="
