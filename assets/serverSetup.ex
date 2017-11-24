@@ -25,3 +25,8 @@ const user = {
   name: user => user.getName(),
   address: user => user.getAddress(),
 }
+
+
+
+
+

@@ -3,5 +3,8 @@
     id
     stars
     commentary
+    root {
+      changed
+    }
   }
 }

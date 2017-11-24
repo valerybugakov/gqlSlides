@@ -1,5 +1,5 @@
 "person": {
-  "name": "Darth Vader",
+  "name": "Anakin Skywalker",
   "birthYear": "41.9BBY",
   "planet": {
     "name": "Tatooine"

@@ -1,3 +1,76 @@
+        <CodeSlide
+          transition={[]}
+          lang="jsx"
+          color="white"
+          bgColor="#122b45"
+          code={require("raw-loader!../assets/request.ex")}
+          ranges={[
+            { loc: [0, 0], title: "Стандартный запрос" },
+            { loc: [0, 5], note: "Actions" },
+            { loc: [6, 11], note: "Reducer" },
+            { loc: [12, 23], note: "Thunk" },
+            { loc: [24, 32], note: "Connect" },
+            { loc: [33, 41], note: "Lifecycle" },
+            { loc: [42, 55], note: "Render" },
+            { loc: [42, 55], note: "Нормализация?" },
+            { loc: [42, 55], note: "Оптимистичные апдейты?" },
+          ]}
+        />
+
+
+        <Slide
+          bgColor="black"
+          notes="
+            Кроме доступности, нужно дать возможность обойти overfetching в полях, которые возвращают массивы данных.
+            Так как аргументы можно использовать на любом уровне вложенности, не забывайте добвлять их.
+          "
+        >
+          <Heading size={5} textColor="white">Больше аргументов</Heading>
+          <CodeSnippet
+            code={require("raw-loader!../assets/arguments.ex")}
+            lang="graphql"
+            codeStyle={{
+              fontSize: 22,
+              color: '#aeebff',
+              fontWeight: 'bold',
+            }}
+          />
+        </Slide>
+
+        <Slide>
+          <Layout>
+            <Fill>
+              <Image src={images.who} />
+            </Fill>
+            <Fill>
+              <CodeSnippet
+                code={require("raw-loader!../assets/who.ex")}
+                lang="graphql"
+                codeStyle={{
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                }}
+              />
+            </Fill>
+          </Layout>
+        </Slide>
+
+const a = "
+АПИ должно быть эффективным — мы хотим ЗАБИРАТЬ ТОЛЬКО ТЕ ДАННЫЕ,
+  КОТОРЫЕ НАМ НУЖНЫ чтобы СВЕСТИ НАГРУЗКУ НА СЕТЬ К МИНИМУМУ,
+  и мы НЕ ХОТИМ ДЕЛАТЬ МНОГО ЗАПРОСОВ, особенно актуально для мобильных девайсов с плохой связью,
+  в идеале хотим забирать все что нам нужно сразу.
+
+  Гкл ПЕРЕКЛАДЫВАЕТ всю ответсветнность за данные на серверную команду предоставляя возможность клиентам
+работать НЕЗАВИСИМО
+клиенты должны иметь возможность описывать поля, которые им нужны
+опираясь на информацию о том, что есть на сервере, типы этих полей.
+"
+
+        <Slide>
+          <Image src={images.cache}/>
+        </Slide>
+
         <Slide transition={[]} bgColor="black">
           <Layout>
             <Fill>

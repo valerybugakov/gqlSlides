@@ -8,19 +8,15 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-const todosQuery = gql`
-  query myQuery($status: String) {
-    todos(status: $status) {
-      text
-    }
-  }
-`
-
 export default graphql(todosQuery, {
-  options: { variables: { status: DONE } },
+  options: {
+    variables: {
+      status: DONE
+    }
+  },
 })(TodoApp);
 
-class ComponentWithData exteds Component {
+class TodoApp extends Component {
   render() {
     if (this.props.data.isLoading) {
       return <Loader />

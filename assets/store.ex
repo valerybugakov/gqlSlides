@@ -1,7 +1,7 @@
-const key = __typename + objectId
+// key = __typename + objectId
 
 "store": {
-  "$ROOT_QUERY.locations": {
+  "$ROOT_QUERY:locations": {
     "pageNumber": 1,
     "resources": [
       {

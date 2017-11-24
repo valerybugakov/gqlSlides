@@ -1,12 +1,12 @@
 conversation {
   ...
-  assigned {
+  moderator {
+    date
     user {
       id
       firstName
       lastName
       avatarUrl(size: 80)
     }
-    date
   }
 }

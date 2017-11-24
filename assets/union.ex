@@ -18,19 +18,11 @@ type Search {
   }
 }
 
-new IntrospectionFragmentMatcher({
-  introspectionQueryResultData: {
-    __schema: {
-      types: [
-        {
-          kind: 'UNION',
-          name: 'SearchResult',
-          possibleTypes: [
-            { name: 'Human' },
-            { name: 'Starship' },
-          ],
-        },
-      ],
-    },
-  },
+new IntrospectionFragmentMatcher(
+  introspectionQueryResult
+)
+
+const client = new ApolloClient({
+  fragmentMatcher: matcher,
+  // ...
 })
