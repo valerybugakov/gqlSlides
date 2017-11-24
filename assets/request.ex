@@ -1,7 +1,7 @@
 const { start, success, error } = createActions([
-  'FETCH_POSTS_START',
-  'FETCH_POSTS_SUCCESS',
-  'FETCH_POSTS_ERROR',
+  'CREATE_PERSON_START',
+  'CREATE_PERSON_SUCCESS',
+  'CREATE_PERSON_ERROR',
 ])
 
 const reducer = createReducer({
@@ -14,7 +14,7 @@ return async (dispatch, getState) => {
   dispatch(start())
 
   try {
-    const data = await client.query(params)
+    const data = await fetch('/createPerson')
     dispatch(success(data))
   }
   catch (error) {
@@ -33,11 +33,11 @@ export default connect(
 
 class ComponentWithData exteds Component {
   componentDidMount() {
-    this.props.fetchData()
+    this.props.createPerson()
   }
 
   componentWillUnmout() {
-    this.props.abortCurrentFetch()
+    this.props.abortRequest()
   }
 
   render() {
