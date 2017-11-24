@@ -74,41 +74,6 @@ const theme = createTheme({
 theme.screen.progress.pacman.container.mixBlendMode = 'difference'
 theme.screen.progress.pacman.container.opacity = '0.5'
 
-// class StepSlide extends Component {
-//   state = {
-//     steps: 0,
-//   }
-//
-//   updateSteps = steps => {
-//     if (this.state.steps !== steps) {
-//       this.setState({ steps })
-//     }
-//   }
-//
-//   render() {
-//     const { steps, SlideContent, ...rest } = this.props
-//
-//     return (
-//       <Slide
-//         getAppearStep={this.updateSteps}
-//         {...rest}
-//       >
-//         <SlideContent steps={steps} />
-//       </Slide>
-//     )
-//   }
-// }
-
-// class RestSlide extends Component {
-//   render() {
-//     const { steps } = this.props;
-//
-//     return (
-//
-//     )
-//   }
-// }
-
 export default class Presentation extends Component {
   state = {
     steps: 0
