@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Component } from 'react'
 import CodeSlide from 'spectacle-code-slide'
-// import ImageSlide from 'spectacle-image-slide'
+
 import 'prismjs/components/prism-javascript'
 import 'prismjs/components/prism-json'
 import 'prismjs/components/prism-jsx'
@@ -11,31 +11,20 @@ import Graph from '../assets/graph'
 import Steps from '../assets/steps'
 
 import {
-  S, Appear, BlockQuote, Cite, Code, CodePane, ComponentPlayground, Deck, Fill,
-  Heading, Image, Layout, Link, ListItem, List, Markdown, MarkdownSlides, Quote, Slide, SlideSet,
-  TableBody, TableHeader, TableHeaderItem, TableItem, TableRow, Table, Text, GoToAction
-} from 'spectacle';
+  Slide, Text, Appear, Deck, Fill,
+  Heading, Image, Layout, Link, ListItem, List,
+} from 'spectacle'
 
-import preloader from 'spectacle/lib/utils/preloader';
-import createTheme from "spectacle/lib/themes/default";
-// import Interactive from '../assets/interactive';
+import preloader from 'spectacle/lib/utils/preloader'
+import createTheme from 'spectacle/lib/themes/default'
 
 // Require CSS
-require("normalize.css");
+require('normalize.css')
 
 const images = {
-  city: require('../assets/city.jpg'),
-  kat: require('../assets/kat.png'),
-  logo: require('../assets/formidable-logo.svg'),
-  markdown: require('../assets/markdown.png'),
   db: require('../assets/db.png'),
   anakin: require('../assets/anakin.png'),
-  mushroom: require('../assets/mushroom.jpg'),
-  mushrooms: require('../assets/mushrooms.svg'),
   api: require('../assets/api.jpg'),
-  rest1: require('../assets/11.png'),
-  rest2: require('../assets/22.png'),
-  graphiql: require('../assets/graphiql.png'),
   graphiqlGif: require('../assets/graphiql.gif'),
   gqlSummary: require('../assets/gqlSummary.png'),
   schema: require('../assets/schema.png'),
@@ -44,14 +33,8 @@ const images = {
   assigned: require('../assets/assigned.png'),
   who: require('../assets/who.jpg'),
   whyKitten: require('../assets/whyKitten.jpg'),
-  future: require('../assets/future.jpg'),
-  fragment1: require('../assets/fragment1.png'),
-  fragment2: require('../assets/fragment2.png'),
-  reuse: require('../assets/reuse.png'),
-  dataComponent: require('../assets/dataComponent.png'),
   wtf: require('../assets/wtf.jpg'),
   typenameError: require('../assets/typenameError.png'),
-  cache: require('../assets/cache.png'),
   rake: require('../assets/rake2.gif'),
   queryFlow: require('../assets/queryFlow.png'),
   mutation: require('../assets/mutation.png'),
@@ -65,7 +48,8 @@ const images = {
   github: require('../assets/github.svg'),
   twitter: require('../assets/twitter.svg'),
   web: require('../assets/web.svg'),
-};
+  oss: require('../assets/oss.png'),
+}
 
 const flux = [
   require('../assets/flux1.png'),
@@ -75,22 +59,57 @@ const flux = [
   require('../assets/flux5.png'),
 ]
 
-preloader(images);
+preloader(images)
 
 const theme = createTheme({
-  primary: "white",
-  secondary: "#1F2022",
-  tertiary: "#03A9FC",
-  quartenary: "#CECECE"
+  primary: 'white',
+  secondary: '#1F2022',
+  tertiary: '#03A9FC',
+  quartenary: '#CECECE'
 }, {
-  primary: "Montserrat",
-  secondary: "Helvetica"
-});
+  primary: 'Montserrat',
+  secondary: 'Helvetica'
+})
 
 theme.screen.progress.pacman.container.mixBlendMode = 'difference'
 theme.screen.progress.pacman.container.opacity = '0.5'
 
-export default class Presentation extends React.Component {
+// class StepSlide extends Component {
+//   state = {
+//     steps: 0,
+//   }
+//
+//   updateSteps = steps => {
+//     if (this.state.steps !== steps) {
+//       this.setState({ steps })
+//     }
+//   }
+//
+//   render() {
+//     const { steps, SlideContent, ...rest } = this.props
+//
+//     return (
+//       <Slide
+//         getAppearStep={this.updateSteps}
+//         {...rest}
+//       >
+//         <SlideContent steps={steps} />
+//       </Slide>
+//     )
+//   }
+// }
+
+// class RestSlide extends Component {
+//   render() {
+//     const { steps } = this.props;
+//
+//     return (
+//
+//     )
+//   }
+// }
+
+export default class Presentation extends Component {
   state = {
     steps: 0
   }
@@ -102,12 +121,11 @@ export default class Presentation extends React.Component {
   }
 
   render() {
-    console.log(this.state.steps)
     const { steps } = this.state
 
     return (
       <Deck transition={['slide']} theme={theme} transitionDuration={500}>
-        <Slide transition={['zoom']} bgColor="primary">
+        <Slide bgColor="primary">
           <Heading textSize="5rem" margin="0 60px 140px" lineHeight={1} textColor="black">
             Грабли GraphQL на клиенте
           </Heading>
@@ -115,6 +133,11 @@ export default class Presentation extends React.Component {
           <Image width="200px" src={images.martiansMini} />
         </Slide>
         <Slide>
+          <Heading size={5} margin="0 0 5px 0">Evil Martians</Heading>
+          <Image src={images.oss} />
+        </Slide>
+        <Slide>
+          <Heading size={5} margin="0 0 5px 0">Evil Martians</Heading>
           <Image src={images.products} />
         </Slide>
         <Slide
@@ -136,9 +159,7 @@ export default class Presentation extends React.Component {
           <Heading size={3} textColor="tertiary" margin="0 0 35px 0">Почему GraphQL</Heading>
         </Slide>
         <Slide
-          transition={[]}
           display="flex"
-          getAppearStep={this.updateSteps}
           notes="
             REST не гибок, скорее всего в таком случае мы не будет пользоваться каноническим РЕСТом
             с эндпоинтом под каждую сущность и 10 запросами на такую простую карточку
@@ -183,7 +204,6 @@ export default class Presentation extends React.Component {
           </Layout>
         </Slide>
         <Slide
-          transition={[]}
           bgColor="black"
           notes="
             6 лет назад разработчики facebook столкнулись с такой же проблемой, тогда мобильный интернет и смартфоны были еще медленнее
@@ -195,7 +215,7 @@ export default class Presentation extends React.Component {
             <Fill>
               <Text textColor="white" textSize="30" textAlign="left">Запрос</Text>
               <CodeSnippet
-                code={require("raw-loader!../assets/anakinQuery2.ex")}
+                code={require('raw-loader!../assets/anakinQuery2.ex')}
                 lang="graphql"
                 codeStyle={{
                   fontSize: 22,
@@ -208,7 +228,7 @@ export default class Presentation extends React.Component {
             <Fill>
               <Text textColor="white" textSize="30" textAlign="left">Ответ</Text>
               <CodeSnippet
-                code={require("raw-loader!../assets/anakinResult2.ex")}
+                code={require('raw-loader!../assets/anakinResult2.ex')}
                 lang="json"
                 codeStyle={{
                   fontSize: 22,
@@ -286,7 +306,7 @@ export default class Presentation extends React.Component {
             <Fill>
               {steps === 0 ?
                 <CodeSnippet
-                  code={require("raw-loader!../assets/schema.graphql")}
+                  code={require('raw-loader!../assets/schema.graphql')}
                   lang="graphql"
                   codeStyle={{
                     fontSize: 22,
@@ -296,7 +316,7 @@ export default class Presentation extends React.Component {
                 />
                 :
                 <CodeSnippet
-                  code={require("raw-loader!../assets/schemaQuery.ex")}
+                  code={require('raw-loader!../assets/schemaQuery.ex')}
                   lang="graphql"
                   codeStyle={{
                     fontSize: 22,
@@ -310,7 +330,6 @@ export default class Presentation extends React.Component {
           <Appear><span /></Appear>
         </Slide>
         <CodeSlide
-          transition={[]}
           lang="jsx"
           notes="
             На сервере схема задается в виде строки либо в отдельном файле формата гкл.
@@ -319,9 +338,9 @@ export default class Presentation extends React.Component {
           "
           color="white"
           bgColor="#122b45"
-          code={require("raw-loader!../assets/serverSetup.ex")}
+          code={require('raw-loader!../assets/serverSetup.ex')}
           ranges={[
-            { loc: [0, 0], title: "На сервере" },
+            { loc: [0, 0], title: 'На сервере' },
             { loc: [0, 17] },
             { loc: [18, 32] },
           ]}
@@ -344,7 +363,7 @@ export default class Presentation extends React.Component {
                 HTTP POST request
               </Text>
               <CodeSnippet
-                code={require("raw-loader!../assets/simpleQuery.ex")}
+                code={require('raw-loader!../assets/simpleQuery.ex')}
                 lang="graphql"
                 codeStyle={{
                   fontSize: 22,
@@ -358,7 +377,7 @@ export default class Presentation extends React.Component {
                 JSON response
               </Text>
               <CodeSnippet
-                code={require("raw-loader!../assets/simpleResponse.ex")}
+                code={require('raw-loader!../assets/simpleResponse.ex')}
                 lang="json"
                 codeStyle={{
                   fontSize: 22,
@@ -401,7 +420,6 @@ export default class Presentation extends React.Component {
           </Appear>
         </Slide>
         <Slide
-          transition={['fade']}
           bgColor="secondary"
           textColor="primary"
           notes="
@@ -422,7 +440,6 @@ export default class Presentation extends React.Component {
           </List>
         </Slide>
         <Slide
-          transition={['fade']}
           bgColor="secondary"
           textColor="primary"
           notes="
@@ -463,7 +480,6 @@ export default class Presentation extends React.Component {
           <Image src={images.rake} />
         </Slide>
         <Slide
-          transition={['fade']}
           bgColor="secondary"
           textColor="primary"
           notes="
@@ -541,7 +557,7 @@ export default class Presentation extends React.Component {
           <Layout>
             <Fill>
               <CodeSnippet
-                code={require("raw-loader!../assets/assignedBad.ex")}
+                code={require('raw-loader!../assets/assignedBad.ex')}
                 lang="graphql"
                 codeStyle={{
                   fontSize: 22,
@@ -553,7 +569,7 @@ export default class Presentation extends React.Component {
             <Appear>
               <Fill>
                 <CodeSnippet
-                  code={require("raw-loader!../assets/assignedGood.ex")}
+                  code={require('raw-loader!../assets/assignedGood.ex')}
                   lang="graphql"
                   codeStyle={{
                     fontSize: 22,
@@ -582,7 +598,7 @@ export default class Presentation extends React.Component {
           <Layout>
             <Fill>
               <CodeSnippet
-                code={require("raw-loader!../assets/searchUsers.ex")}
+                code={require('raw-loader!../assets/searchUsers.ex')}
                 lang="graphql"
                 codeStyle={{
                   fontSize: 22,
@@ -594,7 +610,7 @@ export default class Presentation extends React.Component {
             <Appear>
               <Fill>
                 <CodeSnippet
-                  code={require("raw-loader!../assets/searchQuery.ex")}
+                  code={require('raw-loader!../assets/searchQuery.ex')}
                   lang="graphql"
                   codeStyle={{
                     fontSize: 22,
@@ -623,7 +639,7 @@ export default class Presentation extends React.Component {
           <Layout>
             <Fill>
               <CodeSnippet
-                code={require("raw-loader!../assets/muatation.ex")}
+                code={require('raw-loader!../assets/muatation.ex')}
                 lang="graphql"
                 codeStyle={{
                   fontSize: 22,
@@ -644,7 +660,7 @@ export default class Presentation extends React.Component {
             </Fill>
             <Fill>
               <CodeSnippet
-                code={require("raw-loader!../assets/who.ex")}
+                code={require('raw-loader!../assets/who.ex')}
                 lang="graphql"
                 codeStyle={{
                   fontSize: 22,
@@ -662,13 +678,12 @@ export default class Presentation extends React.Component {
             Аполло клиент позицианирует себя как самый юзер френдли клиент.
             Это на самом деле так, он не требует билд степа и его мнимальный сетап занимает 10 строчек кода.
           "
-          transition={[]}
           lang="js"
           color="white"
           bgColor="#122b45"
-          code={require("raw-loader!../assets/clientSetup.ex")}
+          code={require('raw-loader!../assets/clientSetup.ex')}
           ranges={[
-            { loc: [0, 0], title: "Apollo Client setup" },
+            { loc: [0, 0], title: 'Apollo Client setup' },
             { loc: [0, 3] },
             { loc: [4, 9] },
           ]}
@@ -739,16 +754,15 @@ export default class Presentation extends React.Component {
           />
         </Slide>
         <CodeSlide
-          transition={[]}
           lang="jsx"
           color="white"
           bgColor="#122b45"
-          code={require("raw-loader!../assets/reactApollo.ex")}
+          code={require('raw-loader!../assets/reactApollo.ex')}
           ranges={[
-            { loc: [0, 0], title: "React Apollo" },
-            { loc: [0, 9], note: "Provider" },
-            { loc: [10, 17], note: "Container" },
-            { loc: [18, 33], note: "Render" },
+            { loc: [0, 0], title: 'React Apollo' },
+            { loc: [0, 9], note: 'Provider' },
+            { loc: [10, 17], note: 'Container' },
+            { loc: [18, 33], note: 'Render' },
           ]}
         />
         <Slide bgColor="#122b45" getAppearStep={this.updateSteps}>
@@ -758,7 +772,7 @@ export default class Presentation extends React.Component {
           <Appear><span /></Appear>
           <Appear><span /></Appear>
         </Slide>
-        <Slide transition={['slide']} bgColor="#fcfdfd">
+        <Slide bgColor="#fcfdfd">
           <Heading size={3} textColor="tertiary" textFont="primary" margin="0 0 35px 0">
             GraphQL everything
           </Heading>
@@ -820,13 +834,12 @@ export default class Presentation extends React.Component {
           <Image src={images.typenameError}/>
         </Slide>
         <CodeSlide
-          transition={[]}
           lang="js"
           color="white"
           bgColor="#122b45"
-          code={require("raw-loader!../assets/union.ex")}
+          code={require('raw-loader!../assets/union.ex')}
           ranges={[
-            { loc: [0, 0], title: "__typename" },
+            { loc: [0, 0], title: '__typename' },
             { loc: [0, 6] },
             { loc: [7, 19] },
             { loc: [20, 36] },
@@ -843,8 +856,7 @@ export default class Presentation extends React.Component {
           <Image src={images.persistedQueries1} />
           <Image src={images.persistedQueries2} />
         </Slide>
-        <Slide
-        >
+        <Slide>
           <Heading fill size={4} textColor="tertiary">
             Persisted queries
           </Heading>
@@ -870,13 +882,12 @@ export default class Presentation extends React.Component {
           </List>
         </Slide>
         <CodeSlide
-          transition={[]}
           lang="js"
           color="white"
           bgColor="#122b45"
-          code={require("raw-loader!../assets/cacheDiff.ex")}
+          code={require('raw-loader!../assets/cacheDiff.ex')}
           ranges={[
-            { loc: [0, 0], title: "Проверка кэша" },
+            { loc: [0, 0], title: 'Проверка кэша' },
             { loc: [0, 12] },
           ]}
           notes="
@@ -888,7 +899,7 @@ export default class Presentation extends React.Component {
           <Layout>
             <Fill>
               <CodeSnippet
-                code={require("raw-loader!../assets/cacheResponse.ex")}
+                code={require('raw-loader!../assets/cacheResponse.ex')}
                 lang="json"
                 codeStyle={{
                   fontSize: 22,
@@ -899,7 +910,7 @@ export default class Presentation extends React.Component {
             </Fill>
             <Fill>
               <CodeSnippet
-                code={require("raw-loader!../assets/store.ex")}
+                code={require('raw-loader!../assets/store.ex')}
                 lang="json"
                 codeStyle={{
                   fontSize: 22,
@@ -916,7 +927,7 @@ export default class Presentation extends React.Component {
           <Layout>
             <Fill>
               <CodeSnippet
-                code={require("raw-loader!../assets/assignedBad.ex")}
+                code={require('raw-loader!../assets/assignedBad.ex')}
                 lang="graphql"
                 codeStyle={{
                   fontSize: 22,
@@ -927,7 +938,7 @@ export default class Presentation extends React.Component {
             </Fill>
             <Fill>
               <CodeSnippet
-                code={require("raw-loader!../assets/assignedGood.ex")}
+                code={require('raw-loader!../assets/assignedGood.ex')}
                 lang="graphql"
                 codeStyle={{
                   fontSize: 22,
@@ -941,7 +952,7 @@ export default class Presentation extends React.Component {
         <Slide bgColor="black">
           <Text bold textColor="tertiary">Если мы не контролируем данные</Text>
           <CodeSnippet
-            code={require("raw-loader!../assets/dataId.ex")}
+            code={require('raw-loader!../assets/dataId.ex')}
             lang="js"
             codeStyle={{
               fontSize: 22,
@@ -953,7 +964,7 @@ export default class Presentation extends React.Component {
         <Slide bgColor="black">
           <Text bold textColor="tertiary">Если мы не контролируем данные</Text>
           <CodeSnippet
-            code={require("raw-loader!../assets/customUpdate.ex")}
+            code={require('raw-loader!../assets/customUpdate.ex')}
             lang="js"
             codeStyle={{
               fontSize: 22,
@@ -963,7 +974,7 @@ export default class Presentation extends React.Component {
           />
         </Slide>
 
-        <Slide transition={['fade']} bgColor="secondary" textColor="primary">
+        <Slide bgColor="secondary" textColor="primary">
           <Heading size={6} textColor="tertiary">
             Итого
           </Heading>
@@ -991,7 +1002,7 @@ export default class Presentation extends React.Component {
           </List>
         </Slide>
 
-        <Slide transition={["fade"]}>
+        <Slide>
           <Heading textAlign="left" margin="0 0 50px 0" size={4} bold={false}>Вопросы?</Heading>
           <Layout>
             <Fill
@@ -1004,21 +1015,21 @@ export default class Presentation extends React.Component {
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Image src={images.twitter} width="40px" height="40px" margin="0 15px 0 0" />
-                <Text textSize="2rem" textColor="#47a0ec">valerybugakov</Text>
+                <Link href="http://twitter.com/valerybugakov" textSize="2rem" textColor="#47a0ec">valerybugakov</Link>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
                 <Image src={images.github} width="40px" height="40px" margin="0 15px 0 0" />
-                <Text textSize="2rem">valerybugakov</Text>
+                <Link href="http://github.com/valerybugakov" textColor="black" textSize="2rem">valerybugakov</Link>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
                 <Image src={images.twitter} width="40px" height="40px" margin="0 15px 0 0" />
-                <Text textSize="2rem" textColor="#47a0ec">evilmartians</Text>
+                <Text href="http://twitter.com/evilmartians" textSize="2rem" textColor="#47a0ec">evilmartians</Text>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
                 <Image src={images.web} width="40px" height="40px" margin="0 15px 0 0" />
-                <Text textSize="2rem">http://evl.ms</Text>
+                <Link textSize="2rem" textColor="black" href="http://evl.ms">http://evl.ms</Link>
               </div>
             </Fill>
             <Fill>
@@ -1027,6 +1038,6 @@ export default class Presentation extends React.Component {
           </Layout>
         </Slide>
       </Deck>
-    );
+    )
   }
 }

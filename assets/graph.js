@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class Graph extends Component {
   componentDidMount() {
-    var w = c.width = 1000,
+    let w = c.width = 1000,
       h = c.height = 700,
       ctx = c.getContext('2d'),
 
@@ -63,7 +63,7 @@ export default class Graph extends Component {
 
       animating = false,
 
-      Tau = Math.PI * 2;
+      Tau = Math.PI * 2
 
     ctx.fillStyle = '#111'
     ctx.fillRect(0, 0, w, h)
@@ -72,276 +72,262 @@ export default class Graph extends Component {
     ctx.fillText('Calculating Nodes', w / 2 - ctx.measureText('Calculating Nodes').width / 2, h / 2 - 15)
 
     function init() {
-      connections.length = 0;
-      data.length = 0;
-      all.length = 0;
-      toDevelop.length = 0;
+      connections.length = 0
+      data.length = 0
+      all.length = 0
+      toDevelop.length = 0
 
-      var connection = new Connection(0, 0, 0, opts.baseSize);
-      connection.step = Connection.rootStep;
-      connections.push(connection);
-      all.push(connection);
-      connection.link();
+      const connection = new Connection(0, 0, 0, opts.baseSize)
+      connection.step = Connection.rootStep
+      connections.push(connection)
+      all.push(connection)
+      connection.link()
 
       while (toDevelop.length > 0) {
-        toDevelop[0].link();
-        toDevelop.shift();
+        toDevelop[0].link()
+        toDevelop.shift()
       }
 
-      if(!animating) {
-        animating = true;
-        anim();
+      if (!animating) {
+        animating = true
+        anim()
       }
     }
 
-    function Connection( x, y, z, size ){
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.size = size;
+    function Connection(x, y, z, size) {
+      this.x = x
+      this.y = y
+      this.z = z
+      this.size = size
 
-      this.screen = {};
+      this.screen = {}
 
-      this.links = [];
-      this.probabilities = [];
-      this.isEnd = false;
+      this.links = []
+      this.probabilities = []
+      this.isEnd = false
 
-      this.glowSpeed = opts.baseGlowSpeed + opts.addedGlowSpeed * Math.random();
+      this.glowSpeed = opts.baseGlowSpeed + opts.addedGlowSpeed * Math.random()
     }
-    Connection.prototype.link = function(){
+    Connection.prototype.link = function () {
 
-      if( this.size < opts.minSize )
-        return this.isEnd = true;
+      if (this.size < opts.minSize) {return this.isEnd = true}
 
       var links = [],
-        connectionsNum = opts.baseConnections + Math.random() * opts.addedConnections |0,
+        connectionsNum = opts.baseConnections + Math.random() * opts.addedConnections | 0,
         attempt = opts.connectionAttempts,
 
         alpha, beta, len,
         cosA, sinA, cosB, sinB,
         pos = {},
-        passedExisting, passedBuffered;
+        passedExisting, passedBuffered
 
-      while( links.length < connectionsNum && --attempt > 0 ){
+      while (links.length < connectionsNum && --attempt > 0) {
 
-        alpha = Math.random() * Math.PI;
-        beta = Math.random() * Tau;
-        len = opts.baseDist + opts.addedDist * Math.random();
+        alpha = Math.random() * Math.PI
+        beta = Math.random() * Tau
+        len = opts.baseDist + opts.addedDist * Math.random()
 
-        cosA = Math.cos( alpha );
-        sinA = Math.sin( alpha );
-        cosB = Math.cos( beta );
-        sinB = Math.sin( beta );
+        cosA = Math.cos(alpha)
+        sinA = Math.sin(alpha)
+        cosB = Math.cos(beta)
+        sinB = Math.sin(beta)
 
-        pos.x = this.x + len * cosA * sinB;
-        pos.y = this.y + len * sinA * sinB;
-        pos.z = this.z + len *        cosB;
+        pos.x = this.x + len * cosA * sinB
+        pos.y = this.y + len * sinA * sinB
+        pos.z = this.z + len * cosB
 
-        if( pos.x*pos.x + pos.y*pos.y + pos.z*pos.z < squareRange ){
+        if (pos.x * pos.x + pos.y * pos.y + pos.z * pos.z < squareRange) {
 
-          passedExisting = true;
-          passedBuffered = true;
-          for( var i = 0; i < connections.length; ++i )
-            if( squareDist( pos, connections[ i ] ) < squareAllowed )
-              passedExisting = false;
+          passedExisting = true
+          passedBuffered = true
+          for (var i = 0; i < connections.length; ++i) {
+            if (squareDist(pos, connections[ i ]) < squareAllowed) {passedExisting = false}
+          }
 
-          if( passedExisting )
-            for( var i = 0; i < links.length; ++i )
-              if( squareDist( pos, links[ i ] ) < squareAllowed )
-                passedBuffered = false;
+          if (passedExisting) {
+            for (var i = 0; i < links.length; ++i) {
+              if (squareDist(pos, links[ i ]) < squareAllowed) {passedBuffered = false}
+            }
+          }
 
-          if( passedExisting && passedBuffered )
-            links.push( { x: pos.x, y: pos.y, z: pos.z } );
+          if (passedExisting && passedBuffered) {links.push({ x: pos.x, y: pos.y, z: pos.z })}
 
         }
 
       }
 
-      if( links.length === 0 )
-        this.isEnd = true;
-      else {
-        for( var i = 0; i < links.length; ++i ){
+      if (links.length === 0) {this.isEnd = true} else {
+        for (var i = 0; i < links.length; ++i) {
 
           var pos = links[ i ],
-            connection = new Connection( pos.x, pos.y, pos.z, this.size * opts.sizeMultiplier );
+            connection = new Connection(pos.x, pos.y, pos.z, this.size * opts.sizeMultiplier)
 
-          this.links[ i ] = connection;
-          all.push( connection );
-          connections.push( connection );
+          this.links[ i ] = connection
+          all.push(connection)
+          connections.push(connection)
         }
-        for( var i = 0; i < this.links.length; ++i )
-          toDevelop.push( this.links[ i ] );
+        for (var i = 0; i < this.links.length; ++i) {toDevelop.push(this.links[ i ])}
       }
     }
-    Connection.prototype.step = function(){
+    Connection.prototype.step = function () {
 
-      this.setScreen();
-      this.screen.color = ( this.isEnd ? opts.endColor : opts.connectionColor ).replace( 'light', 30 + ( ( tick * this.glowSpeed ) % 30 ) ).replace( 'alp', .2 + ( 1 - this.screen.z / mostDistant ) * .8 );
+      this.setScreen()
+      this.screen.color = (this.isEnd ? opts.endColor : opts.connectionColor).replace('light', 30 + ((tick * this.glowSpeed) % 30)).replace('alp', .2 + (1 - this.screen.z / mostDistant) * .8)
 
-      for( var i = 0; i < this.links.length; ++i ){
-        ctx.moveTo( this.screen.x, this.screen.y );
-        ctx.lineTo( this.links[ i ].screen.x, this.links[ i ].screen.y );
+      for (let i = 0; i < this.links.length; ++i) {
+        ctx.moveTo(this.screen.x, this.screen.y)
+        ctx.lineTo(this.links[ i ].screen.x, this.links[ i ].screen.y)
       }
     }
-    Connection.rootStep = function(){
-      this.setScreen();
-      this.screen.color = opts.rootColor.replace( 'light', 30 + ( ( tick * this.glowSpeed ) % 30 ) ).replace( 'alp', ( 1 - this.screen.z / mostDistant ) * .8 );
+    Connection.rootStep = function () {
+      this.setScreen()
+      this.screen.color = opts.rootColor.replace('light', 30 + ((tick * this.glowSpeed) % 30)).replace('alp', (1 - this.screen.z / mostDistant) * .8)
 
-      for( var i = 0; i < this.links.length; ++i ){
-        ctx.moveTo( this.screen.x, this.screen.y );
-        ctx.lineTo( this.links[ i ].screen.x, this.links[ i ].screen.y );
+      for (let i = 0; i < this.links.length; ++i) {
+        ctx.moveTo(this.screen.x, this.screen.y)
+        ctx.lineTo(this.links[ i ].screen.x, this.links[ i ].screen.y)
       }
     }
-    Connection.prototype.draw = function(){
-      ctx.fillStyle = this.screen.color;
-      ctx.beginPath();
-      ctx.arc( this.screen.x, this.screen.y, this.screen.scale * this.size, 0, Tau );
-      ctx.fill();
+    Connection.prototype.draw = function () {
+      ctx.fillStyle = this.screen.color
+      ctx.beginPath()
+      ctx.arc(this.screen.x, this.screen.y, this.screen.scale * this.size, 0, Tau)
+      ctx.fill()
     }
 
-    function Data( connection ){
-      this.glowSpeed = opts.baseGlowSpeed + opts.addedGlowSpeed * Math.random();
-      this.speed = opts.baseSpeed + opts.addedSpeed * Math.random();
+    function Data(connection) {
+      this.glowSpeed = opts.baseGlowSpeed + opts.addedGlowSpeed * Math.random()
+      this.speed = opts.baseSpeed + opts.addedSpeed * Math.random()
 
-      this.screen = {};
+      this.screen = {}
 
-      this.setConnection( connection );
+      this.setConnection(connection)
     }
 
-    Data.prototype.reset = function(){
-      this.setConnection( connections[ 0 ] );
-      this.ended = 2;
+    Data.prototype.reset = function () {
+      this.setConnection(connections[ 0 ])
+      this.ended = 2
     }
 
-    Data.prototype.step = function(){
-      this.proportion += this.speed;
+    Data.prototype.step = function () {
+      this.proportion += this.speed
 
-      if( this.proportion < 1 ){
-        this.x = this.ox + this.dx * this.proportion;
-        this.y = this.oy + this.dy * this.proportion;
-        this.z = this.oz + this.dz * this.proportion;
-        this.size = ( this.os + this.ds * this.proportion ) * opts.dataToConnectionSize;
-      } else
-        this.setConnection( this.nextConnection );
+      if (this.proportion < 1) {
+        this.x = this.ox + this.dx * this.proportion
+        this.y = this.oy + this.dy * this.proportion
+        this.z = this.oz + this.dz * this.proportion
+        this.size = (this.os + this.ds * this.proportion) * opts.dataToConnectionSize
+      } else {this.setConnection(this.nextConnection)}
 
-      this.screen.lastX = this.screen.x;
-      this.screen.lastY = this.screen.y;
-      this.setScreen();
-      this.screen.color = opts.dataColor.replace( 'light', 40 + ( ( tick * this.glowSpeed ) % 50 ) ).replace( 'alp', .2 + ( 1 - this.screen.z / mostDistant ) * .6 );
+      this.screen.lastX = this.screen.x
+      this.screen.lastY = this.screen.y
+      this.setScreen()
+      this.screen.color = opts.dataColor.replace('light', 40 + ((tick * this.glowSpeed) % 50)).replace('alp', .2 + (1 - this.screen.z / mostDistant) * .6)
 
     }
 
-    Data.prototype.draw = function(){
-      if( this.ended )
-        return --this.ended; // not sre why the thing lasts 2 frames, but it does
+    Data.prototype.draw = function () {
+      if (this.ended) {return --this.ended} // not sre why the thing lasts 2 frames, but it does
 
-      ctx.beginPath();
-      ctx.strokeStyle = this.screen.color;
-      ctx.lineWidth = this.size * this.screen.scale;
-      ctx.moveTo( this.screen.lastX, this.screen.lastY );
-      ctx.lineTo( this.screen.x, this.screen.y );
-      ctx.stroke();
+      ctx.beginPath()
+      ctx.strokeStyle = this.screen.color
+      ctx.lineWidth = this.size * this.screen.scale
+      ctx.moveTo(this.screen.lastX, this.screen.lastY)
+      ctx.lineTo(this.screen.x, this.screen.y)
+      ctx.stroke()
     }
 
-    Data.prototype.setConnection = function( connection ){
+    Data.prototype.setConnection = function (connection) {
 
-      if( connection.isEnd )
-        this.reset();
+      if (connection.isEnd) {this.reset()} else {
 
-      else {
+        this.connection = connection
+        this.nextConnection = connection.links[ connection.links.length * Math.random() | 0 ]
 
-        this.connection = connection;
-        this.nextConnection = connection.links[ connection.links.length * Math.random() |0 ];
+        this.ox = connection.x // original coordinates
+        this.oy = connection.y
+        this.oz = connection.z
+        this.os = connection.size // base size
 
-        this.ox = connection.x; // original coordinates
-        this.oy = connection.y;
-        this.oz = connection.z;
-        this.os = connection.size; // base size
+        this.nx = this.nextConnection.x // new
+        this.ny = this.nextConnection.y
+        this.nz = this.nextConnection.z
+        this.ns = this.nextConnection.size
 
-        this.nx = this.nextConnection.x; // new
-        this.ny = this.nextConnection.y;
-        this.nz = this.nextConnection.z;
-        this.ns = this.nextConnection.size;
+        this.dx = this.nx - this.ox // delta
+        this.dy = this.ny - this.oy
+        this.dz = this.nz - this.oz
+        this.ds = this.ns - this.os
 
-        this.dx = this.nx - this.ox; // delta
-        this.dy = this.ny - this.oy;
-        this.dz = this.nz - this.oz;
-        this.ds = this.ns - this.os;
-
-        this.proportion = 0;
+        this.proportion = 0
       }
     }
 
-    Connection.prototype.setScreen = Data.prototype.setScreen = function() {
-      var x = this.x,
+    Connection.prototype.setScreen = Data.prototype.setScreen = function () {
+      let x = this.x,
         y = this.y,
-        z = this.z;
+        z = this.z
 
       // apply rotation on X axis
-      var Y = y;
-      y = y * cosX - z * sinX;
-      z = z * cosX + Y * sinX;
+      const Y = y
+      y = y * cosX - z * sinX
+      z = z * cosX + Y * sinX
 
       // rot on Y
-      var Z = z;
-      z = z * cosY - x * sinY;
-      x = x * cosY + Z * sinY;
+      const Z = z
+      z = z * cosY - x * sinY
+      x = x * cosY + Z * sinY
 
-      this.screen.z = z;
+      this.screen.z = z
 
       // translate on Z
-      z += opts.depth;
+      z += opts.depth
 
-      this.screen.scale = opts.focalLength / z;
-      this.screen.x = opts.vanishPoint.x + x * this.screen.scale;
-      this.screen.y = opts.vanishPoint.y + y * this.screen.scale;
+      this.screen.scale = opts.focalLength / z
+      this.screen.x = opts.vanishPoint.x + x * this.screen.scale
+      this.screen.y = opts.vanishPoint.y + y * this.screen.scale
 
     }
-    function squareDist( a, b ){
-      var x = b.x - a.x,
+    function squareDist(a, b) {
+      let x = b.x - a.x,
         y = b.y - a.y,
-        z = b.z - a.z;
+        z = b.z - a.z
 
-      return x*x + y*y + z*z;
+      return x * x + y * y + z * z
     }
 
-    function anim(){
-      window.requestAnimationFrame( anim );
+    function anim() {
+      window.graphAnimID = window.requestAnimationFrame(anim)
 
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = opts.repaintColor;
-      ctx.fillRect( 0, 0, w, h );
+      ctx.globalCompositeOperation = 'source-over'
+      ctx.fillStyle = opts.repaintColor
+      ctx.fillRect(0, 0, w, h)
 
-      ++tick;
+      ++tick
 
-      var rotX = tick * opts.rotVelX,
-        rotY = tick * opts.rotVelY;
+      let rotX = tick * opts.rotVelX,
+        rotY = tick * opts.rotVelY
 
-      cosX = Math.cos( rotX );
-      sinX = Math.sin( rotX );
-      cosY = Math.cos( rotY );
-      sinY = Math.sin( rotY );
+      cosX = Math.cos(rotX)
+      sinX = Math.sin(rotX)
+      cosY = Math.cos(rotY)
+      sinY = Math.sin(rotY)
 
-      if( data.length < connections.length * opts.dataToConnections ){
-        var datum = new Data( connections[ 0 ] );
-        data.push( datum );
-        all.push( datum );
+      if (data.length < connections.length * opts.dataToConnections) {
+        const datum = new Data(connections[ 0 ])
+        data.push(datum)
+        all.push(datum)
       }
 
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.beginPath();
-      ctx.lineWidth = opts.wireframeWidth;
-      ctx.strokeStyle = opts.wireframeColor;
-      all.map( function( item ){ item.step(); } );
-      ctx.stroke();
-      ctx.globalCompositeOperation = 'source-over';
-      all.sort( function( a, b ){ return b.screen.z - a.screen.z } );
-      all.map( function( item ){ item.draw(); } );
-
-      /*ctx.beginPath();
-    ctx.strokeStyle = 'red';
-    ctx.arc( opts.vanishPoint.x, opts.vanishPoint.y, opts.range * opts.focalLength / opts.depth, 0, Tau );
-    ctx.stroke();*/
+      ctx.globalCompositeOperation = 'lighter'
+      ctx.beginPath()
+      ctx.lineWidth = opts.wireframeWidth
+      ctx.strokeStyle = opts.wireframeColor
+      all.map((item) => { item.step() })
+      ctx.stroke()
+      ctx.globalCompositeOperation = 'source-over'
+      all.sort((a, b) => { return b.screen.z - a.screen.z })
+      all.map((item) => { item.draw() })
     }
 
     window.addEventListener('click', init)
@@ -351,6 +337,7 @@ export default class Graph extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('click', window.init)
+    window.cancelAnimationFrame(window.graphAnimID)
   }
 
   render() {

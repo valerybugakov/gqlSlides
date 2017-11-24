@@ -3,9 +3,9 @@ import padStart from 'lodash.padstart'
 
 function highlightCode(code, lang) {
   if (window.Prism) {
-    return window.Prism.highlight(code, window.Prism.languages[lang]);
+    return window.Prism.highlight(code, window.Prism.languages[lang])
   } else {
-    return code;
+    return code
   }
 }
 
@@ -37,22 +37,22 @@ export default class CodeSnippet extends Component {
     }
 
     const lines = getHighlightedCodeLines(code, lang).map((line, index) =>
-      <div
+      (<div
         key={index}
         dangerouslySetInnerHTML={{
           __html: showLineNumbers
             ? getLineNumber(index) + line
             : line
         }}
-      />
+      />)
     )
 
     return (
       <pre>
         <code
           style={{
-            display: "inline-block",
-            textAlign: "left",
+            display: 'inline-block',
+            textAlign: 'left',
             ...codeStyle,
           }}
         >

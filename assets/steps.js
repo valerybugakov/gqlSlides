@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import './steps.css'
 
 export default class Steps extends Component {
   componentDidMount() {
-    const steps = document.querySelectorAll('.steps');
+    const steps = document.querySelectorAll('.steps')
 
     const stepsTimer = 700
 
@@ -13,26 +13,26 @@ export default class Steps extends Component {
     // Delay for BounceIn
     setTimeout(() => {
       steps.forEach((el, i) => {
-        const step = el;
-        const timer = (stepsTimer * 2) * i;
+        const step = el
+        const timer = (stepsTimer * 2) * i
 
         setTimeout(() => {
           // Line Flow
-          step.classList.add('is-line-entering');
-          step.classList.add('is-title-entering');
+          step.classList.add('is-line-entering')
+          step.classList.add('is-title-entering')
           // }
-        }, timer);
-      });
-    }, 0);
+        }, timer)
+      })
+    }, 0)
   }
 
   render() {
-    const { steps } = this.props;
+    const { steps } = this.props
 
     return (
       <ul className="steps-box">
         {steps.map(step =>
-          <li
+          (<li
             key={step.label}
             className="steps is-circle-entering is-completed"
           >
@@ -42,7 +42,7 @@ export default class Steps extends Component {
                 {step.title}
               </div>
             </div>
-          </li>
+          </li>)
         )}
       </ul>
     )
