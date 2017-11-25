@@ -8,10 +8,10 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-export default graphql(todosQuery, {
+export default graphql(todoMutation, {
   options: {
     variables: {
-      status: DONE
+      status: UNDONE
     }
   },
 })(TodoApp);
@@ -26,7 +26,11 @@ class TodoApp extends Component {
       return <Error />
     }
 
-    return <div>{this.props.data.result}</div>
+    return (
+      <div onClick={this.props.createTodo}>
+        {this.props.data.result}
+      </div>
+    )
   }
 }
 

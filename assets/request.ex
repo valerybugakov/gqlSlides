@@ -32,10 +32,6 @@ export default connect(
 )(ComponentWithData)
 
 class ComponentWithData exteds Component {
-  componentDidMount() {
-    this.props.createPerson()
-  }
-
   componentWillUnmout() {
     this.props.abortRequest()
   }
@@ -49,7 +45,11 @@ class ComponentWithData exteds Component {
       return <Error />
     }
 
-    return <div>{this.props.data}</div>
+    return (
+      <div onClick={this.props.createPerson}>
+        {this.props.data}
+      </div>
+    )
   }
 }
 

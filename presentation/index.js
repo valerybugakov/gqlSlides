@@ -216,10 +216,10 @@ export default class Presentation extends Component {
             { loc: [6, 11], note: 'Reducer' },
             { loc: [12, 23], note: 'Side effect' },
             { loc: [24, 32], note: 'Connect' },
-            { loc: [33, 41], note: 'Lifecycle' },
-            { loc: [42, 55], note: 'Render' },
-            { loc: [42, 55], note: 'Нормализация?' },
-            { loc: [42, 55], note: 'Оптимистичные апдейты?' },
+            { loc: [33, 37], note: 'Lifecycle' },
+            { loc: [38, 54], note: 'Render' },
+            { loc: [38, 54], note: 'Нормализация?' },
+            { loc: [38, 54], note: 'Оптимистичные апдейты?' },
           ]}
         />
         <Slide
@@ -745,7 +745,7 @@ export default class Presentation extends Component {
             { loc: [0, 0], title: 'React Apollo' },
             { loc: [0, 9], note: 'Provider' },
             { loc: [10, 17], note: 'Container' },
-            { loc: [18, 33], note: 'Render' },
+            { loc: [18, 37], note: 'Render' },
           ]}
         />
         <Slide bgColor="#122b45" getAppearStep={this.updateSteps}>
